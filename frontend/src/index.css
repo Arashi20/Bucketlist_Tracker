@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #272b1d;
+  color: #f2ede6;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-weight: 400;
+  color-scheme: dark;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Form controls — light cream to match card backgrounds ── */
+input,
+select,
+textarea {
+  color-scheme: light;
+  background-color: #e0e2d4;
+  color: #272b1d;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #787c68;
+  opacity: 1;
+}
+
+input[type='date']::-webkit-calendar-picker-indicator {
+  filter: opacity(0.45);
+  cursor: pointer;
+}
+
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235c6050' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px !important;
+}
+
+/* ── Remove Leaflet's white focus outline on country paths ── */
+path.leaflet-interactive {
+  outline: none !important;
+}
+.leaflet-interactive:focus {
+  outline: none !important;
+}
+
+/* ── Subtle golden glow on visited countries ── */
+path.country-visited {
+  filter: drop-shadow(0 0 4px rgba(201, 164, 106, 0.5));
+  transition: filter 0.2s ease;
+}
+path.country-visited:hover {
+  filter: drop-shadow(0 0 7px rgba(201, 164, 106, 0.75));
+}
+
+/* ── Leaflet tooltip ── */
+.leaflet-tooltip {
+  background-color: #343828;
+  border: 1px solid #5c6050;
+  color: #f2ede6;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+.leaflet-tooltip-top::before    { border-top-color: #5c6050; }
+.leaflet-tooltip-bottom::before { border-bottom-color: #5c6050; }
+.leaflet-tooltip-left::before   { border-left-color: #5c6050; }
+.leaflet-tooltip-right::before  { border-right-color: #5c6050; }
+
+/* ── Leaflet zoom controls ── */
+.leaflet-bar a {
+  background-color: #343828 !important;
+  color: #cccebc !important;
+  border-color: #5c6050 !important;
+}
+.leaflet-bar a:hover {
+  background-color: #424638 !important;
+  color: #f2ede6 !important;
+}
+
+/* ── Attribution ── */
+.leaflet-control-attribution {
+  background: rgba(39, 43, 29, 0.8) !important;
+  color: #989b88 !important;
+}
+.leaflet-control-attribution a { color: #cccebc !important; }
