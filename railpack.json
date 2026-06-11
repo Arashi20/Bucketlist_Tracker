@@ -1,6 +1,6 @@
 {
   "packages": {
-    "node": "*",
-    "python": "*"
+    "node": "20",
+    "python": "3.11"
   }
 }
