@@ -11,6 +11,11 @@ const STATUS_META = {
 
 const STATUS_OPTS = Object.keys(STATUS_META)
 
+const isDatePast = (dateStr) => {
+  if (!dateStr) return false
+  return dateStr < new Date().toISOString().slice(0, 10)
+}
+
 const DEFAULT_FORM = {
   destination: '',
   travel_date: '',
@@ -198,13 +203,17 @@ export default function TripPlannerPage() {
                 <input
                   type="date"
                   value={form.travel_date}
-                  onChange={e => setForm({ ...form, travel_date: e.target.value })}
+                  onChange={e => {
+                    const date = e.target.value
+                    setForm({ ...form, travel_date: date, status: isDatePast(date) ? 'completed' : form.status })
+                  }}
                   className="flex-1 border border-warm-300 rounded-lg px-3 py-2.5 text-sm font-medium focus:outline-none focus:border-warm-500"
                 />
                 <select
                   value={form.status}
                   onChange={e => setForm({ ...form, status: e.target.value })}
-                  className="flex-1 border border-warm-300 rounded-lg px-3 py-2.5 text-sm font-medium focus:outline-none focus:border-warm-500"
+                  disabled={isDatePast(form.travel_date)}
+                  className="flex-1 border border-warm-300 rounded-lg px-3 py-2.5 text-sm font-medium focus:outline-none focus:border-warm-500 disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   {STATUS_OPTS.map(s => (
                     <option key={s} value={s}>{STATUS_META[s].label}</option>
