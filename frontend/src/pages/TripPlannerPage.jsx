@@ -162,7 +162,7 @@ export default function TripPlannerPage() {
                       {budget > 0               && <span className="text-warm-900 font-bold flex items-center gap-1"><Wallet size={11} strokeWidth={2} />€{budget.toLocaleString()}</span>}
                     </div>
                     {trip.notes && (
-                      <p className="text-xs text-warm-700 mt-1.5 leading-relaxed font-medium">{trip.notes}</p>
+                      <p className="text-xs text-warm-700 mt-1.5 leading-relaxed font-medium whitespace-pre-wrap">{trip.notes}</p>
                     )}
                   </div>
                   <div className="flex gap-1 flex-shrink-0">
