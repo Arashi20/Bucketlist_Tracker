@@ -3,12 +3,14 @@ import { Globe, MapPin, Building2, Zap, Star, Compass, Mountain, Trophy, Check }
 import { bucketlist } from '../api'
 
 const ITEM_TYPES = ['all', 'country', 'region', 'city', 'activity']
+const FILTER_TABS = [...ITEM_TYPES, 'finished']
 
 const TYPE_META = {
   country:  { label: 'Country',  plural: 'Countries',  Icon: Globe      },
   region:   { label: 'Region',   plural: 'Regions',    Icon: MapPin     },
   city:     { label: 'City',     plural: 'Cities',     Icon: Building2  },
   activity: { label: 'Activity', plural: 'Activities', Icon: Zap        },
+  finished: { label: 'Finished', plural: 'Finished',   Icon: Check      },
 }
 
 function getLevel(done) {
@@ -33,9 +35,11 @@ export default function BucketlistPage() {
     bucketlist.list().then(setItems).finally(() => setLoading(false))
   }, [])
 
-  const filtered = typeFilter === 'all'
-    ? items
-    : items.filter(item => item.type === typeFilter)
+  const filtered = typeFilter === 'finished'
+    ? items.filter(item => item.status === 'done')
+    : typeFilter === 'all'
+      ? items.filter(item => item.status !== 'done')
+      : items.filter(item => item.type === typeFilter && item.status !== 'done')
 
   const doneCount = items.filter(i => i.status === 'done').length
   const level     = getLevel(doneCount)
@@ -130,7 +134,7 @@ export default function BucketlistPage() {
 
       {/* Type filter tabs */}
       <div className="flex flex-wrap gap-1 mb-4">
-        {ITEM_TYPES.map(t => (
+        {FILTER_TABS.map(t => (
           <button
             key={t}
             onClick={() => setTypeFilter(t)}
