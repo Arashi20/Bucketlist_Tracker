@@ -1,7 +1,9 @@
+import datetime
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from models import TripPlan, TripPlanCreate, TripPlanUpdate, TripPlanRead
+from models import TripPlan, TripPlanCreate, TripPlanUpdate, TripPlanRead, TripStatus
 from database import get_session
 
 router = APIRouter(prefix="/trips", tags=["trips"])
@@ -10,7 +12,22 @@ router = APIRouter(prefix="/trips", tags=["trips"])
 @router.get("/", response_model=list[TripPlanRead])
 async def get_trips(session: AsyncSession = Depends(get_session)):
     result = await session.execute(select(TripPlan))
-    return result.scalars().all()
+    trip_list = result.scalars().all()
+
+    today = datetime.date.today()
+    stale = [
+        trip for trip in trip_list
+        if trip.travel_date and trip.travel_date < today and trip.status != TripStatus.completed
+    ]
+    if stale:
+        for trip in stale:
+            trip.status = TripStatus.completed
+            session.add(trip)
+        await session.commit()
+        for trip in stale:
+            await session.refresh(trip)
+
+    return trip_list
 
 
 @router.post("/", response_model=TripPlanRead)
