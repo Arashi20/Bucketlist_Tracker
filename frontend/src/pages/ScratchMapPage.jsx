@@ -144,13 +144,13 @@ export default function ScratchMapPage() {
 
         <div className="flex flex-col md:flex-1 md:min-h-0">
           <div className="rounded-xl overflow-hidden border border-warm-600 bg-warm-950
-                          h-[52vw] min-h-[220px] max-h-[420px]
+                          h-[75vw] min-h-[320px] max-h-[560px]
                           md:flex-1 md:h-auto md:max-h-none">
             {geoJson ? (
               <MapContainer
                 ref={mapRef}
                 center={[20, 10]}
-                zoom={2}
+                zoom={2.3}
                 minZoom={2}
                 maxZoom={7}
                 style={{ height: '100%', width: '100%', background: '#272b1d' }}

@@ -133,12 +133,12 @@ export default function BucketlistPage() {
       </div>
 
       {/* Type filter tabs */}
-      <div className="flex flex-wrap gap-1 mb-4">
+      <div className="flex flex-nowrap gap-1 mb-4">
         {FILTER_TABS.map(t => (
           <button
             key={t}
             onClick={() => setTypeFilter(t)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+            className={`flex-1 px-1.5 py-1.5 rounded-lg text-[11px] sm:text-xs font-semibold whitespace-nowrap text-center transition-colors ${
               typeFilter === t
                 ? 'bg-warm-600 text-warm-50 border border-warm-500'
                 : 'text-warm-200 hover:text-warm-50 hover:bg-warm-700'

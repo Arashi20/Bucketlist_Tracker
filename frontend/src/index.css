@@ -85,6 +85,15 @@ path.country-visited:hover {
   color: #f2ede6 !important;
 }
 
+/* ── Hide scrollbar on horizontally-scrolling chip rows ── */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* ── Attribution ── */
 .leaflet-control-attribution {
   background: rgba(39, 43, 29, 0.8) !important;
