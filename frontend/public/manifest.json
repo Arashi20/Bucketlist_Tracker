@@ -1,0 +1,36 @@
+{
+  "name": "Trav with Ash",
+  "short_name": "Trav with Ash",
+  "description": "Track and plan your travel bucket list",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#2d3020",
+  "theme_color": "#2d3020",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-512-maskable.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "maskable"
+    }
+  ]
+}
