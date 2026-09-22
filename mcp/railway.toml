@@ -1,0 +1,12 @@
+# Config for the connector service only. Railway does not look for config
+# inside the Root Directory, so point the service at this file explicitly:
+# Settings -> Config-as-code -> /mcp/railway.toml. Without that, the repo-root
+# railway.toml (the main app's npm build + uvicorn start) would be used.
+
+[build]
+builder = "RAILPACK"
+
+[deploy]
+# One worker: the used-code set and the sign-in throttle live in memory.
+startCommand = "gunicorn server:app --workers 1 --bind 0.0.0.0:$PORT"
+healthcheckPath = "/healthz"
