@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet'
+import { MapContainer, GeoJSON } from 'react-leaflet'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { Home, Compass, Plane, Globe, Trophy, Check } from 'lucide-react'
@@ -156,10 +156,6 @@ export default function ScratchMapPage() {
                 style={{ height: '100%', width: '100%', background: '#272b1d' }}
                 scrollWheelZoom
               >
-                <TileLayer
-                  url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-                  attribution='&copy; <a href="https://carto.com/">CARTO</a>'
-                />
                 <GeoJSON
                   key={geoJsonKey}
                   data={geoJson}
