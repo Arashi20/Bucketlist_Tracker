@@ -54,3 +54,9 @@ bucketlist-app/
 - **Frontend**: React 18 + Vite + Tailwind + Leaflet
 - **Backend**: FastAPI + SQLModel + asyncpg
 - **Database**: PostgreSQL (Railway)
+
+## Claude connector
+
+`mcp/` is a separate, read-only MCP service that lets Claude read the
+bucketlist, scratch map and trips. It deploys as its own Railway service; see
+[mcp/README.md](mcp/README.md).
