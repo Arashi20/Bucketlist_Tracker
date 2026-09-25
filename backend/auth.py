@@ -1,18 +1,57 @@
 import os
 import secrets
+import time
 from datetime import datetime, timedelta, timezone
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from jose import JWTError, jwt
+import jwt
+from dotenv import load_dotenv
 
-SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret-change-in-production")
+load_dotenv()
+
+
+def _required_env(name: str) -> str:
+    # No insecure fallbacks: a missing secret must stop the app, not leave it
+    # running with a publicly known key or password.
+    value = os.getenv(name, "")
+    if not value:
+        raise RuntimeError(f"{name} must be set")
+    return value
+
+
+SECRET_KEY = _required_env("SECRET_KEY")
 ALGORITHM  = "HS256"
 TOKEN_EXPIRE_HOURS = 24
 
 APP_USERNAME = os.getenv("APP_USERNAME", "ash")
-APP_PASSWORD = os.getenv("APP_PASSWORD", "changeme")
+APP_PASSWORD = _required_env("APP_PASSWORD")
 
 bearer = HTTPBearer()
+
+# Failed logins are throttled globally rather than per IP: behind Railway's
+# proxy the client address comes from a header a caller can set at will.
+MAX_FAILED_LOGINS = 5
+FAILURE_WINDOW_SECONDS = 900
+LOCKOUT_SECONDS = 900
+_failed_logins: list[float] = []
+
+
+def lockout_remaining() -> int:
+    """Seconds until login is allowed again, or 0 when it is allowed now."""
+    global _failed_logins
+    now = time.time()
+    _failed_logins = [t for t in _failed_logins if now - t < FAILURE_WINDOW_SECONDS]
+    if len(_failed_logins) < MAX_FAILED_LOGINS:
+        return 0
+    return max(int(LOCKOUT_SECONDS - (now - _failed_logins[-1])), 0)
+
+
+def record_login_failure() -> None:
+    _failed_logins.append(time.time())
+
+
+def clear_login_failures() -> None:
+    _failed_logins.clear()
 
 
 def verify_credentials(username: str, password: str) -> bool:
@@ -30,10 +69,14 @@ async def get_current_user(
     credentials: HTTPAuthorizationCredentials = Depends(bearer),
 ) -> str:
     try:
-        payload  = jwt.decode(credentials.credentials, SECRET_KEY, algorithms=[ALGORITHM])
+        payload  = jwt.decode(
+            credentials.credentials, SECRET_KEY, algorithms=[ALGORITHM],
+            options={"require": ["exp", "sub"]},
+        )
         username = payload.get("sub")
-        if not username:
+        # Renaming APP_USERNAME revokes tokens issued under the old name.
+        if not username or not secrets.compare_digest(username.encode(), APP_USERNAME.encode()):
             raise ValueError
         return username
-    except (JWTError, ValueError):
+    except (jwt.PyJWTError, ValueError):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid or expired token")

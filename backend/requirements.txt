@@ -1,9 +1,9 @@
-fastapi==0.115.0
-uvicorn[standard]==0.30.6
+fastapi==0.141.1
+uvicorn[standard]==0.37.0
 sqlmodel==0.0.21
-asyncpg==0.29.0
-psycopg2-binary==2.9.9
-python-dotenv==1.0.1
-alembic==1.13.2
-python-jose[cryptography]==3.3.0
-aiofiles==23.2.1
+asyncpg==0.30.0
+psycopg2-binary==2.9.10
+python-dotenv==1.2.2
+alembic==1.16.5
+PyJWT==2.15.0
+aiofiles==24.1.0
