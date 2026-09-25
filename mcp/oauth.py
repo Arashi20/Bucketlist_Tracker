@@ -401,6 +401,12 @@ def _render_approval(client, redirect_uri, params, error=None, status=200):
         **_describe_client(client, redirect_uri))
     response = make_response(page)
     response.status_code = 429 if locked_for else status
+    # The page takes the account password, so no other site may frame it
+    # (clickjacking) and no cache may keep it.
+    response.headers['X-Frame-Options'] = 'DENY'
+    response.headers['Content-Security-Policy'] = "frame-ancestors 'none'"
+    response.headers['Cache-Control'] = 'no-store'
+    response.headers['Referrer-Policy'] = 'no-referrer'
     if locked_for:
         response.headers['Retry-After'] = str(locked_for)
     return response
