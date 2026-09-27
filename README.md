@@ -14,11 +14,11 @@ venv\Scripts\activate        # Windows
 pip install -r requirements.txt
 
 cp .env.example .env
-# Edit .env and fill in your DATABASE_URL
+# Edit .env and fill in DATABASE_URL, SECRET_KEY and APP_PASSWORD
 
 uvicorn main:app --reload
 # API runs on http://localhost:8000
-# Docs at http://localhost:8000/docs
+# Docs at http://localhost:8000/docs (set ENABLE_API_DOCS=1 in .env)
 ```
 
 ### Frontend

@@ -20,8 +20,10 @@ export default function LoginPage() {
       const token = await authApi.login(username, password)
       login(token)
       navigate('/', { replace: true })
-    } catch {
-      setError('Invalid username or password.')
+    } catch (err) {
+      setError(err.response?.status === 429
+        ? 'Too many failed attempts. Try again in 15 minutes.'
+        : 'Invalid username or password.')
     } finally {
       setLoad(false)
     }

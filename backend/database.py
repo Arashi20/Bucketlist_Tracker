@@ -14,7 +14,8 @@ if DATABASE_URL:
     elif DATABASE_URL.startswith("postgresql://") and "+asyncpg" not in DATABASE_URL:
         DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://", 1)
 
-engine = create_async_engine(DATABASE_URL, echo=True)
+# SQL echo logs every query with its parameters, so it is opt-in.
+engine = create_async_engine(DATABASE_URL, echo=os.getenv("SQL_ECHO", "0") == "1")
 
 async_session = sessionmaker(
     engine, class_=AsyncSession, expire_on_commit=False
